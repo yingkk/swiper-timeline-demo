@@ -2,118 +2,179 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>timeline1</title>
-    <link rel="stylesheet" href="./js/swiper/swiper.min.css">
-    <link rel="stylesheet" href="./css/layout.css">
-    <link rel="stylesheet" href="./css/index.css">
-    <script src="./js/jquery-1.10.1.min.js"></script>
-    <script src="./js/swiper/swiper.min.js"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>timeline</title>
+  <link rel="stylesheet" href="./js/swiper/swiper.min.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <script src="./js/jquery-1.10.1.min.js"></script>
+  <script src="./js/swiper/swiper.min.js"></script>
 </head>
 
 <body>
-    <div id="swiper-history">
-        <div class="swiper">
-            <div class="swiper-pagination"></div>
-            <div class="swiper-wrapper"></div>
-            <div class="long-line"></div>
-        </div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-    </div>
 
-    <script>
-        var modifier=1;//每天的px
-        var historyList=[{"detail":"Swiper1.0","date":"2012-03-15"},
-                         {"detail":"Swiper2.0","date":"2013-06-22"},
-                         {"detail":"Swiper中文网上线","date":"2014-11-21"},
-                         {"detail":"Swiper3.x版本上线","date":"2015-02-11"},
-                         {"detail":"Swiper交友群开通","date":"2015-02-26"},
-                         {"detail":"Swiper3.0.4，图片延迟加载","date":"2015-03-06"},
-                         {"detail":"Swiper资源论坛上线[<a href='http://bbs.swiper.com.cn' target='_blank'>下载资源</a>]","date":"2015-03-22"},
-                         {"detail":"Swiper交友群扩容至1000人","date":"2015-07-27"},
-                         {"detail":"Swiper3.2.0，响应式设置","date":"2015-11-07"},
-                         {"detail":"Swiper3.3.0，导航条样式增加","date":"2016-01-10"},
-                         {"detail":"获得百度认证[<a href='https://www.baidu.com/s?wd=swiper' target='_blank'>看认证情况</a>]","date":"2016-05-27"},
-                         {"detail":"Swiper3.4.0，变焦和历史状态","date":"2016-10-16"},
-                         {"detail":"Swiper交友群人数达到2000","date":"2017-01-19"},	
-                         {"detail":"Swiper3.4.2","date":"2017-03-10"},
-                         {"detail":"众多知名网站将Swiper作为滑动插件首选","date":"2017-05-20"},	
-                         {"detail":"Swiper4.0测试版上线","date":"2017-08-30"},	
-                         {"detail":"Swiper4.0.0正式版上线","date":"2017-10-04"},			
-                         {"detail":"Swiper中文网四周年","date":"2018-11-21"},			
-                         {"detail":"Swiper 4.4.0，Thumbs组件制作缩略焦点图","date":"2018-12-14"},
-                         {"detail":"Swiper 4.5.0，changeDirection，动态改变切换方向","date":"2019-02-22"},		
-                         {"detail":"Swiper 5正式上线","date":"2019-09-17"},	
-                         {"detail":"Swiper中文网五周年","date":"2019-11-21"},			
-                         {"detail":"Swiper 6正式上线","date":"2020-07-03"},	
-                         {"detail":"Swiper 7正式上线","date":"2021-08-24"},
-                         ];	
-       
-         var mySwiper = new Swiper('#swiper-history .swiper',{
-           virtualTranslate : true,
-           preventClicks : false,
-           navigation: {
-             nextEl: '#swiper-history .swiper-button-next',
-             prevEl: '#swiper-history .swiper-button-prev',
-           },
-           pagination:{
-             el:'#swiper-history .swiper-pagination',
-             clickable:true,
-             renderBullet: function (index, className) {
-               if(index>0){
-                 day1 = new Date(historyList[index]['date'].replace(/-/g, "/"));
-                 day2 = new Date(historyList[index-1]['date'].replace(/-/g, "/"));
-                 time=day1-day2
-                 marginLeft=parseInt( time/ (1000 * 60 * 60 * 24))*modifier;
-               }else{
-                 marginLeft=0
-               }
-             return '<span class="' + className + '" style="margin-left:'+marginLeft+'px;"></span>';
-             
-             },
-           },
-           on:{
-             init: function(){
-               mySlides='';
-               for(var i = 0;i<historyList.length;i++){
-                   this.appendSlide('<div class="swiper-slide slide'+i+'"><span class="detail">'+historyList[i]['detail']+'</span><span class="date">'+historyList[i]['date']+'</span></div>');
-                 this.slides[i].style.transform='translate3d(' + (-i)*this.width + 'px, 0px, 0px)';
-               }
-               this.slideTo(23);
-             },
-             slideChangeTransitionStart: function(){
-               detailPrev= this.slides[this.previousIndex].querySelector('.detail');
-               datePrev= this.slides[this.previousIndex].querySelector('.date');
-               detailPrev.offsetHeight;datePrev.offsetHeight;
-               this.slides[this.previousIndex].style.zIndex=1;
-               detailPrev.style.opacity=datePrev.style.opacity=0;
-               detailPrev.style.transform=datePrev.style.transform='translate3d(0px, 0px, 0px)';
-               
-               detailActive= this.slides[this.activeIndex].querySelector('.detail');
-               dateActive= this.slides[this.activeIndex].querySelector('.date')
-               detailActive.offsetHeight;dateActive.offsetHeight;
-               this.slides[this.activeIndex].style.zIndex=999;
-               detailActive.style.opacity=dateActive.style.opacity=1;
-               detailActive.style.transform='translate3d(0px, 10px, 0px)';
-               dateActive.style.transform='translate3d(0px, -10px, 0px)';
-             
-               moveDay1 = new Date(historyList[this.activeIndex]['date'].replace(/-/g, "/"));
-               moveDay2 = new Date(historyList[0]['date'].replace(/-/g, "/"));
-               moveTime= moveDay1-moveDay2
-               moveDistance= parseInt( moveTime/ (1000 * 60 * 60 * 24))*modifier+10*this.activeIndex;
-               move=this.width/2-5-moveDistance;
-               
-               this.$el.find(".swiper-pagination").css('left',move+'px');//pagination会重新渲染，因此不能用this.pagination.$el
-           
-               
-           },
-           },
-       
-               });	
-           </script>
+  <div class="timeline">
+    <div class="swiper">
+      <div class="swiper-pagination"></div>
+      <div class="swiper-wrapper"></div>
+      <div class="long-line"></div>
+    </div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+  </div>
+
+  <script>
+    var data = {
+      1987: {
+        time: '',
+        img: "./imgs/zly-1.jpg",
+        content:
+          "藏羚羊——雪域精灵，是青藏高原美丽可爱、机敏灵活、驰骋如飞的天使，它身上集中体现了“更快、更高、更强”的奥林匹克精神，北京奥运会吉祥物“迎迎”的原型。",
+      },
+      1989: {
+        time: '20世纪80年代',
+        img: "./imgs/zly-2.jpg",
+        content:
+          "在上世纪八九十年代，人类的枪声打破了可可西里无人区的宁静。一场由偷捕盗猎者、国际销赃者、放牧淘金者多方参与的史无前例珍稀野生动物的大屠杀席卷了藏羚羊的家园，哀鸿遍野，藏铃羊从百万种群，骤降至数万只。",
+      },
+      1992: {
+        time: '1992年',
+        img: "",
+        content:
+          "无人区不是无法区。1992年，治多县西部工委书记索南达杰成立了我国第一支武装反盗猎反盗采队伍——“野牦牛队”。",
+      },
+      1994: {
+        time: '1994年',
+        img: "",
+        content:
+          "高原儿女誓死捍卫青藏净土，打响了保护藏羚羊的保卫战。1994年1月，索南达杰在与盗猎分子的激烈枪战中，不幸牺牲。后索南达杰被原国家环保总局、国家林业局授予“环保卫士”称号。",
+      },
+      1995: {
+        time: '1995年',
+        img: "./imgs/zly-3.jpg",
+        content:
+          "索南达杰倒下了，但守护可可西里的征程曾为停歇。“野牦牛队” 发展壮大到五六十人，更多的志愿者加入了守护可可西里的战斗中。1995年，青海省批准设立玉树州可可西里省级自然保护区。1997年，可可西里自然保护区升格为国家级自然保护区。",
+      },
+      1999: {
+        time: '1999年',
+        img: "",
+        content:
+          "1999年，原国家林业局森林公安局组织开展“可可西里一号行动”，这是可可西里反盗猎斗争的重大转折点。",
+      },
+      2002: {
+        time: '2016年',
+        img: "",
+        content: "2016年，我国首个国家公园——三江源国家公园体制试点实施，包括可可西里在内的三江之源，迎来了新的历史发展机遇。"
+      },
+      2003: {
+        time: '2017年',
+        img: "./imgs/zly-4.jpg",
+        content:
+          "2017年7月7日，青海可可西里获准列入《世界遗产名录》，成为中国第51处世界遗产，也是我国面积最大的世界自然遗产地。",
+      },
+      2005: {
+        time: '2019年',
+        img: "./imgs/zly-5.jpg",
+        content:
+          "藏铃羊种群数量恢复至20万只。藏铃羊的成功保护，是国家生态保护。",
+      },
+    }
+
+    var modifier = 120;//每年的px
+    var yearList = Object.keys(data);
+    var mainInfo;
+    var timelineSwiper = new Swiper('.timeline .swiper', {
+      virtualTranslate: true,
+      preventClicks: false,
+      allowTouchMove: true,
+      navigation: {
+        nextEl: '.timeline .swiper-button-next',
+        prevEl: '.timeline .swiper-button-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+        renderBullet: function (index, className) {
+          var currentYear = yearList[index];
+          if (index > 0) {
+            day1 = new Date(currentYear.replace(/-/g, "/"));
+            day2 = new Date(yearList[index - 1].replace(/-/g, "/"));
+            time = day1 - day2
+            marginLeft = parseInt(time / (1000 * 60 * 60 * 24 * 365)) * modifier;
+          } else {
+            marginLeft = 230
+          }
+          // console.log(swiper.slides[index]);
+          var hasImg = data[currentYear]['img'] ? "has-img" : ""
+          if (index % 2 === 0) {
+            return '<div class="' + className + '" style="margin-left:' + marginLeft + 'px;"  data-index="' + index + '">' +
+              '<div class="content ' + hasImg + '" >' +
+              '<div class="content-bd">' +
+              '<div class="content-bd-des">' +
+              data[currentYear]['content'] +
+              '</div>' +
+              '<div class="content-bd-img">' +
+              '<img src="' + data[currentYear]['img'] + '">' +
+              '</div>' +
+              '</div>' +
+              '<div class="content-hd">' +
+              data[currentYear]['time'] +
+              '<div class="triangle down">' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>';
+          } else {
+            return '<div class="' + className + '" style="margin-left:' + marginLeft + 'px;"  data-index="' + index + '">' +
+              '<div class="content ' + hasImg + '" >' +
+              '<div class="content-hd">' +
+              data[currentYear]['time'] +
+              '<div class="triangle up">' +
+              '</div>' +
+              '</div>' +
+              '<div class="content-bd">' +
+              '<div class="content-bd-des">' +
+              data[currentYear]['content'] +
+              '</div>' +
+              '<div class="content-bd-img">' +
+              '<img src="' + data[currentYear]['img'] + '">' +
+              '</div>' +
+              '</div>' +
+              '</div>' +
+              '</div>';
+          }
+          // return '<span class="' + className + '">' + (index + 1) + '</span>';
+        },
+      },
+      on: {
+        init: function (swiper) {
+          mySlides = '';
+          for (var i = 0; i < yearList.length; i++) {
+            swiper.appendSlide('<div class="swiper-slide slide' + i + '"><span class="date">' + yearList[i] + '</span></div>');
+            swiper.slides[i].style.transform = 'translate3d(' + (-i) * swiper.width + 'px, 0px, 0px)';
+          }
+          swiper.slideTo(0);
+        },
+        slideChange: function (swiper) {
+          datePrev = swiper.slides[swiper.previousIndex].querySelector('.date');
+          swiper.slides[swiper.previousIndex].style.zIndex = 1;
+          dateActive = swiper.slides[swiper.activeIndex].querySelector('.date')
+          swiper.slides[swiper.activeIndex].style.zIndex = 999;
+
+          moveDay1 = new Date(yearList[swiper.activeIndex].replace(/-/g, "/"));
+          moveDay2 = new Date(yearList[0].replace(/-/g, "/"));
+          moveTime = moveDay1 - moveDay2
+          moveDistance = parseInt(moveTime / (1000 * 60 * 60 * 24 * 365)) * modifier + 10 * swiper.activeIndex;
+          move = swiper.width / 2 - 600 - moveDistance;
+          swiper.pagination.$el[0].style.left = move + 'px';
+          var currentYear = yearList[swiper.activeIndex]
+        },
+      }
+    });
+
+  </script>
+
 </body>
 
 </html>
